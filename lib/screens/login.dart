@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ga/screens/home_screen.dart';
 import 'package:ga/screens/signup/signup.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../apis/student_login.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -8,10 +13,30 @@ class LoginScreen extends StatefulWidget {
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
+final loginProvider = Provider<bool>((ref) {
+  return false;
+});
+
 class _LoginScreenState extends State<LoginScreen> {
   bool _isCheck = false;
   bool _securePassword = true;
   bool _isValidPassword = true;
+  bool _loginState = true;
+
+  final _idTextEditController = TextEditingController();
+  final _passwordTextEditController = TextEditingController();
+
+  Future saveToken(String token) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString("token", token);
+  }
+
+  @override
+  void dispose() {
+    _idTextEditController.dispose();
+    _passwordTextEditController.dispose();
+    super.dispose();
+  }
 
   Color getColor(Set<MaterialState> states) {
     return Colors.grey.shade400;
@@ -47,10 +72,11 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               Column(
                 children: [
-                  const Padding(
-                    padding: EdgeInsets.only(top: 80.0),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 80.0),
                     child: TextField(
-                      decoration: InputDecoration(
+                      controller: _idTextEditController,
+                      decoration: const InputDecoration(
                         fillColor: Color(0xffF7F8F8),
                         filled: true,
                         prefixIcon:
@@ -65,6 +91,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   Padding(
                     padding: const EdgeInsets.only(top: 10),
                     child: TextField(
+                      controller: _passwordTextEditController,
                       obscureText: _securePassword,
                       decoration: InputDecoration(
                         fillColor: const Color(0xffF7F8F8),
@@ -130,41 +157,80 @@ class _LoginScreenState extends State<LoginScreen> {
                 ],
               ),
               Padding(
-                padding: const EdgeInsets.only(bottom: 20.0, top: 100.0),
+                padding: const EdgeInsets.only(bottom: 20.0, top: 80.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Container(
-                      width: MediaQuery.of(context).size.width - 20 * 2,
-                      height: 60,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(99.0),
-                          gradient: const LinearGradient(
-                            begin: Alignment.topRight,
-                            end: Alignment.bottomLeft,
-                            stops: [0.1, 0.9],
-                            colors: [Color(0xff92A3FD), Color(0xff9DCEFF)],
-                          )),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
-                          Padding(
-                            padding: EdgeInsets.only(right: 10.0),
-                            child: Icon(
-                              Icons.login_outlined,
-                              size: 25,
-                              color: Colors.white,
-                            ),
+                    _loginState
+                        ? const Text("")
+                        : const Text(
+                            "Incorrect studentID or password. Please try again.",
+                            style: TextStyle(color: Colors.red, fontSize: 13),
                           ),
-                          Text(
-                            "Login",
-                            style: TextStyle(
-                              fontSize: 16.0,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w700,
-                            ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8.0),
+                      child: GestureDetector(
+                        onTap: () async {
+                          try {
+                            final result =
+                                await postStudentLoginApi.getStudentLoginApi(
+                                    int.parse(_idTextEditController.text),
+                                    _passwordTextEditController.text);
+                            await saveToken(result["access_token"]);
+
+                            // prefs.clear();
+                            // print(result['access_token']);
+                            // if (prefs.getString("token") == null) {
+                            //   prefs.setString("token", result["access_token"]);
+                            // }
+
+                            // print(result);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const HomeScreen(),
+                              ),
+                            );
+                          } catch (error) {
+                            print(error);
+                            setState(() {
+                              _loginState = false;
+                            });
+                          }
+                        },
+                        child: Container(
+                          width: MediaQuery.of(context).size.width - 20 * 2,
+                          height: 60,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(99.0),
+                              gradient: const LinearGradient(
+                                begin: Alignment.topRight,
+                                end: Alignment.bottomLeft,
+                                stops: [0.1, 0.9],
+                                colors: [Color(0xff92A3FD), Color(0xff9DCEFF)],
+                              )),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: const [
+                              Padding(
+                                padding: EdgeInsets.only(right: 10.0),
+                                child: Icon(
+                                  Icons.login_outlined,
+                                  size: 25,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              Text(
+                                "Login",
+                                style: TextStyle(
+                                  fontSize: 16.0,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
+                        ),
                       ),
                     ),
                     Padding(
