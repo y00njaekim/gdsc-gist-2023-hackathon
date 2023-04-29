@@ -56,6 +56,22 @@ Future<String> getIPAddress() async {
   } on PlatformException {
     wifiIPv4 = 'Failed to get Wifi IPv4';
   }
+  wifiIPv4 ??= 'Wifi is not connected';
 
-  return wifiIPv4!;
+  return wifiIPv4;
+}
+
+Future<bool> isNetworkConnected() async {
+  final NetworkInfo networkInfo = NetworkInfo();
+  String? wifiIPv4;
+
+  try {
+    wifiIPv4 = await networkInfo.getWifiIP();
+  } on PlatformException {
+    wifiIPv4 = 'Failed to get Wifi IPv4';
+  }
+  if (wifiIPv4 == null) {
+    return false;
+  }
+  return true;
 }
