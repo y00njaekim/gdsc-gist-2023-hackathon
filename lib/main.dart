@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -7,7 +10,7 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
+  // This widget is the root of your appxlication.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -49,6 +52,34 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+
+  @override
+  void initState() {
+    _getDeviceId();
+    super.initState();
+  }
+
+  Future<Map<String, dynamic>?> _getDeviceId() async {
+    var deviceInfo = DeviceInfoPlugin();
+    if (Platform.isIOS) {
+      var iosDeviceInfo = await deviceInfo.iosInfo;
+      print(iosDeviceInfo.identifierForVendor);
+      print(iosDeviceInfo.name);
+      return {
+        "id": iosDeviceInfo.identifierForVendor,
+        "DeviceName": iosDeviceInfo.name,
+      }; // unique ID on iOS
+    } else if (Platform.isAndroid) {
+      var androidDeviceInfo = await deviceInfo.androidInfo;
+      print(androidDeviceInfo.id);
+      print(androidDeviceInfo.device);
+      return {
+        "id": androidDeviceInfo.id,
+        "DeviceName": androidDeviceInfo.device
+      }; // unique ID on Android
+    }
+    return null;
+  }
 
   void _incrementCounter() {
     setState(() {
@@ -100,7 +131,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             Text(
               '$_counter',
-              style: Theme.of(context).textTheme.headline4,
+              style: Theme.of(context).textTheme.headlineMedium,
             ),
           ],
         ),
