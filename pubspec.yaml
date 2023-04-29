@@ -32,6 +32,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter:
     sdk: flutter
+  geolocator: ^9.0.2
   http: ^0.13.5
   network_info_plus:
 

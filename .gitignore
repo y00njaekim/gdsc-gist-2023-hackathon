@@ -53,9 +53,9 @@ macos/Pods/
 macos/Podfile.lock
 
 # Customed
-*/**/.xcconfig
-*/**/.pbxproj
-*/**/.swift
-*/**/.xcworkspacedata
-*/**/.cc
-*/**/.cmake
+/**/*.xcconfig
+/**/*.pbxproj
+/**/*.swift
+/**/*.xcworkspacedata
+/**/*.cc
+/**/*.cmake
