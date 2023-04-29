@@ -51,11 +51,3 @@ ios/Pods/
 ios/Podfile.lock
 macos/Pods/
 macos/Podfile.lock
-
-# Customed
-/**/*.xcconfig
-/**/*.pbxproj
-/**/*.swift
-/**/*.xcworkspacedata
-/**/*.cc
-/**/*.cmake
