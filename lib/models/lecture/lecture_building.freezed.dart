@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'class_building.dart';
+part of 'lecture_building.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -14,35 +14,35 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
-ClassBuilding _$ClassBuildingFromJson(Map<String, dynamic> json) {
-  return _ClassBuilding.fromJson(json);
+LectureBuilding _$LectureBuildingFromJson(Map<String, dynamic> json) {
+  return _LectureBuilding.fromJson(json);
 }
 
 /// @nodoc
-mixin _$ClassBuilding {
+mixin _$LectureBuilding {
   int get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   String get location => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $ClassBuildingCopyWith<ClassBuilding> get copyWith =>
+  $LectureBuildingCopyWith<LectureBuilding> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $ClassBuildingCopyWith<$Res> {
-  factory $ClassBuildingCopyWith(
-          ClassBuilding value, $Res Function(ClassBuilding) then) =
-      _$ClassBuildingCopyWithImpl<$Res, ClassBuilding>;
+abstract class $LectureBuildingCopyWith<$Res> {
+  factory $LectureBuildingCopyWith(
+          LectureBuilding value, $Res Function(LectureBuilding) then) =
+      _$LectureBuildingCopyWithImpl<$Res, LectureBuilding>;
   @useResult
   $Res call({int id, String name, String location});
 }
 
 /// @nodoc
-class _$ClassBuildingCopyWithImpl<$Res, $Val extends ClassBuilding>
-    implements $ClassBuildingCopyWith<$Res> {
-  _$ClassBuildingCopyWithImpl(this._value, this._then);
+class _$LectureBuildingCopyWithImpl<$Res, $Val extends LectureBuilding>
+    implements $LectureBuildingCopyWith<$Res> {
+  _$LectureBuildingCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -74,22 +74,22 @@ class _$ClassBuildingCopyWithImpl<$Res, $Val extends ClassBuilding>
 }
 
 /// @nodoc
-abstract class _$$_ClassBuildingCopyWith<$Res>
-    implements $ClassBuildingCopyWith<$Res> {
-  factory _$$_ClassBuildingCopyWith(
-          _$_ClassBuilding value, $Res Function(_$_ClassBuilding) then) =
-      __$$_ClassBuildingCopyWithImpl<$Res>;
+abstract class _$$_LectureBuildingCopyWith<$Res>
+    implements $LectureBuildingCopyWith<$Res> {
+  factory _$$_LectureBuildingCopyWith(
+          _$_LectureBuilding value, $Res Function(_$_LectureBuilding) then) =
+      __$$_LectureBuildingCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({int id, String name, String location});
 }
 
 /// @nodoc
-class __$$_ClassBuildingCopyWithImpl<$Res>
-    extends _$ClassBuildingCopyWithImpl<$Res, _$_ClassBuilding>
-    implements _$$_ClassBuildingCopyWith<$Res> {
-  __$$_ClassBuildingCopyWithImpl(
-      _$_ClassBuilding _value, $Res Function(_$_ClassBuilding) _then)
+class __$$_LectureBuildingCopyWithImpl<$Res>
+    extends _$LectureBuildingCopyWithImpl<$Res, _$_LectureBuilding>
+    implements _$$_LectureBuildingCopyWith<$Res> {
+  __$$_LectureBuildingCopyWithImpl(
+      _$_LectureBuilding _value, $Res Function(_$_LectureBuilding) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -99,7 +99,7 @@ class __$$_ClassBuildingCopyWithImpl<$Res>
     Object? name = null,
     Object? location = null,
   }) {
-    return _then(_$_ClassBuilding(
+    return _then(_$_LectureBuilding(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -118,12 +118,12 @@ class __$$_ClassBuildingCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_ClassBuilding implements _ClassBuilding {
-  _$_ClassBuilding(
+class _$_LectureBuilding implements _LectureBuilding {
+  _$_LectureBuilding(
       {required this.id, required this.name, required this.location});
 
-  factory _$_ClassBuilding.fromJson(Map<String, dynamic> json) =>
-      _$$_ClassBuildingFromJson(json);
+  factory _$_LectureBuilding.fromJson(Map<String, dynamic> json) =>
+      _$$_LectureBuildingFromJson(json);
 
   @override
   final int id;
@@ -134,14 +134,14 @@ class _$_ClassBuilding implements _ClassBuilding {
 
   @override
   String toString() {
-    return 'ClassBuilding(id: $id, name: $name, location: $location)';
+    return 'LectureBuilding(id: $id, name: $name, location: $location)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_ClassBuilding &&
+            other is _$_LectureBuilding &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.location, location) ||
@@ -155,25 +155,25 @@ class _$_ClassBuilding implements _ClassBuilding {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_ClassBuildingCopyWith<_$_ClassBuilding> get copyWith =>
-      __$$_ClassBuildingCopyWithImpl<_$_ClassBuilding>(this, _$identity);
+  _$$_LectureBuildingCopyWith<_$_LectureBuilding> get copyWith =>
+      __$$_LectureBuildingCopyWithImpl<_$_LectureBuilding>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_ClassBuildingToJson(
+    return _$$_LectureBuildingToJson(
       this,
     );
   }
 }
 
-abstract class _ClassBuilding implements ClassBuilding {
-  factory _ClassBuilding(
+abstract class _LectureBuilding implements LectureBuilding {
+  factory _LectureBuilding(
       {required final int id,
       required final String name,
-      required final String location}) = _$_ClassBuilding;
+      required final String location}) = _$_LectureBuilding;
 
-  factory _ClassBuilding.fromJson(Map<String, dynamic> json) =
-      _$_ClassBuilding.fromJson;
+  factory _LectureBuilding.fromJson(Map<String, dynamic> json) =
+      _$_LectureBuilding.fromJson;
 
   @override
   int get id;
@@ -183,6 +183,6 @@ abstract class _ClassBuilding implements ClassBuilding {
   String get location;
   @override
   @JsonKey(ignore: true)
-  _$$_ClassBuildingCopyWith<_$_ClassBuilding> get copyWith =>
+  _$$_LectureBuildingCopyWith<_$_LectureBuilding> get copyWith =>
       throw _privateConstructorUsedError;
 }

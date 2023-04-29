@@ -1,21 +1,19 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-// ignore_for_file: non_constant_identifier_names
-
-part of 'class_building.dart';
+part of 'lecture_building.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_ClassBuilding _$$_ClassBuildingFromJson(Map<String, dynamic> json) =>
-    _$_ClassBuilding(
+_$_LectureBuilding _$$_LectureBuildingFromJson(Map<String, dynamic> json) =>
+    _$_LectureBuilding(
       id: json['id'] as int,
       name: json['name'] as String,
       location: json['location'] as String,
     );
 
-Map<String, dynamic> _$$_ClassBuildingToJson(_$_ClassBuilding instance) =>
+Map<String, dynamic> _$$_LectureBuildingToJson(_$_LectureBuilding instance) =>
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,

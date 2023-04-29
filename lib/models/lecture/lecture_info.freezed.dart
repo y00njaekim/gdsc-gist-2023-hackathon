@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'class_info.dart';
+part of 'lecture_info.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -14,12 +14,12 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
-ClassInfo _$ClassInfoFromJson(Map<String, dynamic> json) {
-  return _ClassInfo.fromJson(json);
+LectureInfo _$LectureInfoFromJson(Map<String, dynamic> json) {
+  return _LectureInfo.fromJson(json);
 }
 
 /// @nodoc
-mixin _$ClassInfo {
+mixin _$LectureInfo {
   int get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   int get professor_id => throw _privateConstructorUsedError;
@@ -29,14 +29,15 @@ mixin _$ClassInfo {
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $ClassInfoCopyWith<ClassInfo> get copyWith =>
+  $LectureInfoCopyWith<LectureInfo> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $ClassInfoCopyWith<$Res> {
-  factory $ClassInfoCopyWith(ClassInfo value, $Res Function(ClassInfo) then) =
-      _$ClassInfoCopyWithImpl<$Res, ClassInfo>;
+abstract class $LectureInfoCopyWith<$Res> {
+  factory $LectureInfoCopyWith(
+          LectureInfo value, $Res Function(LectureInfo) then) =
+      _$LectureInfoCopyWithImpl<$Res, LectureInfo>;
   @useResult
   $Res call(
       {int id,
@@ -48,9 +49,9 @@ abstract class $ClassInfoCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$ClassInfoCopyWithImpl<$Res, $Val extends ClassInfo>
-    implements $ClassInfoCopyWith<$Res> {
-  _$ClassInfoCopyWithImpl(this._value, this._then);
+class _$LectureInfoCopyWithImpl<$Res, $Val extends LectureInfo>
+    implements $LectureInfoCopyWith<$Res> {
+  _$LectureInfoCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -97,10 +98,11 @@ class _$ClassInfoCopyWithImpl<$Res, $Val extends ClassInfo>
 }
 
 /// @nodoc
-abstract class _$$_ClassInfoCopyWith<$Res> implements $ClassInfoCopyWith<$Res> {
-  factory _$$_ClassInfoCopyWith(
-          _$_ClassInfo value, $Res Function(_$_ClassInfo) then) =
-      __$$_ClassInfoCopyWithImpl<$Res>;
+abstract class _$$_LectureInfoCopyWith<$Res>
+    implements $LectureInfoCopyWith<$Res> {
+  factory _$$_LectureInfoCopyWith(
+          _$_LectureInfo value, $Res Function(_$_LectureInfo) then) =
+      __$$_LectureInfoCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -113,11 +115,11 @@ abstract class _$$_ClassInfoCopyWith<$Res> implements $ClassInfoCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$_ClassInfoCopyWithImpl<$Res>
-    extends _$ClassInfoCopyWithImpl<$Res, _$_ClassInfo>
-    implements _$$_ClassInfoCopyWith<$Res> {
-  __$$_ClassInfoCopyWithImpl(
-      _$_ClassInfo _value, $Res Function(_$_ClassInfo) _then)
+class __$$_LectureInfoCopyWithImpl<$Res>
+    extends _$LectureInfoCopyWithImpl<$Res, _$_LectureInfo>
+    implements _$$_LectureInfoCopyWith<$Res> {
+  __$$_LectureInfoCopyWithImpl(
+      _$_LectureInfo _value, $Res Function(_$_LectureInfo) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -130,7 +132,7 @@ class __$$_ClassInfoCopyWithImpl<$Res>
     Object? building_id = null,
     Object? attendance_valid_time = null,
   }) {
-    return _then(_$_ClassInfo(
+    return _then(_$_LectureInfo(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -161,8 +163,8 @@ class __$$_ClassInfoCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_ClassInfo implements _ClassInfo {
-  _$_ClassInfo(
+class _$_LectureInfo implements _LectureInfo {
+  _$_LectureInfo(
       {required this.id,
       required this.name,
       required this.professor_id,
@@ -170,8 +172,8 @@ class _$_ClassInfo implements _ClassInfo {
       required this.building_id,
       required this.attendance_valid_time});
 
-  factory _$_ClassInfo.fromJson(Map<String, dynamic> json) =>
-      _$$_ClassInfoFromJson(json);
+  factory _$_LectureInfo.fromJson(Map<String, dynamic> json) =>
+      _$$_LectureInfoFromJson(json);
 
   @override
   final int id;
@@ -188,14 +190,14 @@ class _$_ClassInfo implements _ClassInfo {
 
   @override
   String toString() {
-    return 'ClassInfo(id: $id, name: $name, professor_id: $professor_id, lecture_start_time: $lecture_start_time, building_id: $building_id, attendance_valid_time: $attendance_valid_time)';
+    return 'LectureInfo(id: $id, name: $name, professor_id: $professor_id, lecture_start_time: $lecture_start_time, building_id: $building_id, attendance_valid_time: $attendance_valid_time)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_ClassInfo &&
+            other is _$_LectureInfo &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.professor_id, professor_id) ||
@@ -216,28 +218,28 @@ class _$_ClassInfo implements _ClassInfo {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_ClassInfoCopyWith<_$_ClassInfo> get copyWith =>
-      __$$_ClassInfoCopyWithImpl<_$_ClassInfo>(this, _$identity);
+  _$$_LectureInfoCopyWith<_$_LectureInfo> get copyWith =>
+      __$$_LectureInfoCopyWithImpl<_$_LectureInfo>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_ClassInfoToJson(
+    return _$$_LectureInfoToJson(
       this,
     );
   }
 }
 
-abstract class _ClassInfo implements ClassInfo {
-  factory _ClassInfo(
+abstract class _LectureInfo implements LectureInfo {
+  factory _LectureInfo(
       {required final int id,
       required final String name,
       required final int professor_id,
       required final String lecture_start_time,
       required final int building_id,
-      required final int attendance_valid_time}) = _$_ClassInfo;
+      required final int attendance_valid_time}) = _$_LectureInfo;
 
-  factory _ClassInfo.fromJson(Map<String, dynamic> json) =
-      _$_ClassInfo.fromJson;
+  factory _LectureInfo.fromJson(Map<String, dynamic> json) =
+      _$_LectureInfo.fromJson;
 
   @override
   int get id;
@@ -253,37 +255,37 @@ abstract class _ClassInfo implements ClassInfo {
   int get attendance_valid_time;
   @override
   @JsonKey(ignore: true)
-  _$$_ClassInfoCopyWith<_$_ClassInfo> get copyWith =>
+  _$$_LectureInfoCopyWith<_$_LectureInfo> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
-ClassInfoList _$ClassInfoListFromJson(Map<String, dynamic> json) {
-  return _ClassInfoList.fromJson(json);
+LectureInfoList _$LectureInfoListFromJson(Map<String, dynamic> json) {
+  return _LectureInfoList.fromJson(json);
 }
 
 /// @nodoc
-mixin _$ClassInfoList {
-  List<ClassInfo> get classInfoList => throw _privateConstructorUsedError;
+mixin _$LectureInfoList {
+  List<LectureInfo> get lectureInfoList => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $ClassInfoListCopyWith<ClassInfoList> get copyWith =>
+  $LectureInfoListCopyWith<LectureInfoList> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $ClassInfoListCopyWith<$Res> {
-  factory $ClassInfoListCopyWith(
-          ClassInfoList value, $Res Function(ClassInfoList) then) =
-      _$ClassInfoListCopyWithImpl<$Res, ClassInfoList>;
+abstract class $LectureInfoListCopyWith<$Res> {
+  factory $LectureInfoListCopyWith(
+          LectureInfoList value, $Res Function(LectureInfoList) then) =
+      _$LectureInfoListCopyWithImpl<$Res, LectureInfoList>;
   @useResult
-  $Res call({List<ClassInfo> classInfoList});
+  $Res call({List<LectureInfo> lectureInfoList});
 }
 
 /// @nodoc
-class _$ClassInfoListCopyWithImpl<$Res, $Val extends ClassInfoList>
-    implements $ClassInfoListCopyWith<$Res> {
-  _$ClassInfoListCopyWithImpl(this._value, this._then);
+class _$LectureInfoListCopyWithImpl<$Res, $Val extends LectureInfoList>
+    implements $LectureInfoListCopyWith<$Res> {
+  _$LectureInfoListCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -293,111 +295,111 @@ class _$ClassInfoListCopyWithImpl<$Res, $Val extends ClassInfoList>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? classInfoList = null,
+    Object? lectureInfoList = null,
   }) {
     return _then(_value.copyWith(
-      classInfoList: null == classInfoList
-          ? _value.classInfoList
-          : classInfoList // ignore: cast_nullable_to_non_nullable
-              as List<ClassInfo>,
+      lectureInfoList: null == lectureInfoList
+          ? _value.lectureInfoList
+          : lectureInfoList // ignore: cast_nullable_to_non_nullable
+              as List<LectureInfo>,
     ) as $Val);
   }
 }
 
 /// @nodoc
-abstract class _$$_ClassInfoListCopyWith<$Res>
-    implements $ClassInfoListCopyWith<$Res> {
-  factory _$$_ClassInfoListCopyWith(
-          _$_ClassInfoList value, $Res Function(_$_ClassInfoList) then) =
-      __$$_ClassInfoListCopyWithImpl<$Res>;
+abstract class _$$_LectureInfoListCopyWith<$Res>
+    implements $LectureInfoListCopyWith<$Res> {
+  factory _$$_LectureInfoListCopyWith(
+          _$_LectureInfoList value, $Res Function(_$_LectureInfoList) then) =
+      __$$_LectureInfoListCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({List<ClassInfo> classInfoList});
+  $Res call({List<LectureInfo> lectureInfoList});
 }
 
 /// @nodoc
-class __$$_ClassInfoListCopyWithImpl<$Res>
-    extends _$ClassInfoListCopyWithImpl<$Res, _$_ClassInfoList>
-    implements _$$_ClassInfoListCopyWith<$Res> {
-  __$$_ClassInfoListCopyWithImpl(
-      _$_ClassInfoList _value, $Res Function(_$_ClassInfoList) _then)
+class __$$_LectureInfoListCopyWithImpl<$Res>
+    extends _$LectureInfoListCopyWithImpl<$Res, _$_LectureInfoList>
+    implements _$$_LectureInfoListCopyWith<$Res> {
+  __$$_LectureInfoListCopyWithImpl(
+      _$_LectureInfoList _value, $Res Function(_$_LectureInfoList) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? classInfoList = null,
+    Object? lectureInfoList = null,
   }) {
-    return _then(_$_ClassInfoList(
-      classInfoList: null == classInfoList
-          ? _value._classInfoList
-          : classInfoList // ignore: cast_nullable_to_non_nullable
-              as List<ClassInfo>,
+    return _then(_$_LectureInfoList(
+      lectureInfoList: null == lectureInfoList
+          ? _value._lectureInfoList
+          : lectureInfoList // ignore: cast_nullable_to_non_nullable
+              as List<LectureInfo>,
     ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$_ClassInfoList implements _ClassInfoList {
-  _$_ClassInfoList({required final List<ClassInfo> classInfoList})
-      : _classInfoList = classInfoList;
+class _$_LectureInfoList implements _LectureInfoList {
+  _$_LectureInfoList({required final List<LectureInfo> lectureInfoList})
+      : _lectureInfoList = lectureInfoList;
 
-  factory _$_ClassInfoList.fromJson(Map<String, dynamic> json) =>
-      _$$_ClassInfoListFromJson(json);
+  factory _$_LectureInfoList.fromJson(Map<String, dynamic> json) =>
+      _$$_LectureInfoListFromJson(json);
 
-  final List<ClassInfo> _classInfoList;
+  final List<LectureInfo> _lectureInfoList;
   @override
-  List<ClassInfo> get classInfoList {
-    if (_classInfoList is EqualUnmodifiableListView) return _classInfoList;
+  List<LectureInfo> get lectureInfoList {
+    if (_lectureInfoList is EqualUnmodifiableListView) return _lectureInfoList;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_classInfoList);
+    return EqualUnmodifiableListView(_lectureInfoList);
   }
 
   @override
   String toString() {
-    return 'ClassInfoList(classInfoList: $classInfoList)';
+    return 'LectureInfoList(lectureInfoList: $lectureInfoList)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_ClassInfoList &&
+            other is _$_LectureInfoList &&
             const DeepCollectionEquality()
-                .equals(other._classInfoList, _classInfoList));
+                .equals(other._lectureInfoList, _lectureInfoList));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
-      runtimeType, const DeepCollectionEquality().hash(_classInfoList));
+      runtimeType, const DeepCollectionEquality().hash(_lectureInfoList));
 
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_ClassInfoListCopyWith<_$_ClassInfoList> get copyWith =>
-      __$$_ClassInfoListCopyWithImpl<_$_ClassInfoList>(this, _$identity);
+  _$$_LectureInfoListCopyWith<_$_LectureInfoList> get copyWith =>
+      __$$_LectureInfoListCopyWithImpl<_$_LectureInfoList>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_ClassInfoListToJson(
+    return _$$_LectureInfoListToJson(
       this,
     );
   }
 }
 
-abstract class _ClassInfoList implements ClassInfoList {
-  factory _ClassInfoList({required final List<ClassInfo> classInfoList}) =
-      _$_ClassInfoList;
+abstract class _LectureInfoList implements LectureInfoList {
+  factory _LectureInfoList({required final List<LectureInfo> lectureInfoList}) =
+      _$_LectureInfoList;
 
-  factory _ClassInfoList.fromJson(Map<String, dynamic> json) =
-      _$_ClassInfoList.fromJson;
+  factory _LectureInfoList.fromJson(Map<String, dynamic> json) =
+      _$_LectureInfoList.fromJson;
 
   @override
-  List<ClassInfo> get classInfoList;
+  List<LectureInfo> get lectureInfoList;
   @override
   @JsonKey(ignore: true)
-  _$$_ClassInfoListCopyWith<_$_ClassInfoList> get copyWith =>
+  _$$_LectureInfoListCopyWith<_$_LectureInfoList> get copyWith =>
       throw _privateConstructorUsedError;
 }
