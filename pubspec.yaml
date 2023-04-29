@@ -34,10 +34,11 @@ dependencies:
   equatable: ^2.0.5
   flutter:
     sdk: flutter
+  flutter_riverpod: ^2.3.6
   freezed: ^2.3.2
   geolocator: ^9.0.2
   http: ^0.13.5
-  json_annotation: ^4.8.0
+  json_annotation:
   network_info_plus:
 
 dev_dependencies:
@@ -63,8 +64,8 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
+  assets:
+    - assets/images/logo.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
