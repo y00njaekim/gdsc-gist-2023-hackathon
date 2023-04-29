@@ -24,24 +24,8 @@ class DetailAttendanceScreenState
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            style: TextButton.styleFrom(
-              backgroundColor: Colors.black,
-              // backgroundColor: const Color(0xffF7F8F8),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0),
-              ),
-            ),
-            child: const Icon(
-              Icons.arrow_back_ios,
-              color: Color(0xff1D1617),
-            ),
-          ),
+        leading: const BackButton(
+          color: Colors.black,
         ),
         elevation: 0,
         backgroundColor: Colors.white,
@@ -56,7 +40,9 @@ class DetailAttendanceScreenState
       ),
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
-        child: Center(
+        child: Container(
+          alignment: Alignment.center,
+          color: Colors.white,
           child: SizedBox(
             width: MediaQuery.of(context).size.width - 60,
             child: Container(
