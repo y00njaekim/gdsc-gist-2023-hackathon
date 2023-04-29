@@ -35,7 +35,7 @@ class AttendanceScreenState extends ConsumerState<AttendanceScreen> {
       '어나더우먼워드오브드래곤즈드라이브'
     ];
     return Scaffold(
-      appBar: const MyAppBar(titleText: '20195035 김윤재'),
+      appBar: const MyAppBar(titleText: '20195035 YoonJae Kim'),
       body: SizedBox(
         width: MediaQuery.of(context).size.width - 40,
         height: MediaQuery.of(context).size.height,

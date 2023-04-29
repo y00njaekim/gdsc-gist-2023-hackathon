@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String titleText;
-  final String logoPath = 'assets/images/logo.png';
 
   const MyAppBar({
     Key? key,
@@ -12,19 +11,47 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: Align(
-        alignment: Alignment.centerRight,
-        child: Text(titleText),
-      ),
+      elevation: 0,
+      backgroundColor: Colors.white,
       centerTitle: false,
-      leading: IconButton(
-        icon: Image.asset(logoPath),
-        onPressed: onLogoPressed,
-      ),
       actions: [
-        IconButton(
-          icon: const Icon(Icons.account_circle),
-          onPressed: onProfilePressed,
+        Container(
+          padding: const EdgeInsets.only(right: 30),
+          width: MediaQuery.of(context).size.width - 30,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              IconButton(
+                iconSize: 48.0,
+                // icon: SvgPicture.asset("assets/images/logo.svg"),
+                icon: Image.asset('assets/images/logo.png'),
+                onPressed: onLogoPressed,
+              ),
+              Row(
+                children: [
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: Text(
+                      titleText,
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.only(left: 15),
+                    child: const Icon(
+                      Icons.account_circle,
+                      color: Colors.black,
+                      size: 40,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ],
     );
