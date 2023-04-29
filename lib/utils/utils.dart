@@ -1,6 +1,8 @@
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:network_info_plus/network_info_plus.dart';
 
 int ipStringToInt(String ip) {
@@ -74,4 +76,17 @@ Future<bool> isNetworkConnected() async {
     return false;
   }
   return true;
+}
+
+/// Return the current location of the device
+/// You can use .latitude and .longitude to get the location
+Future<Position?> getCurrentLocation() async {
+  Position? position;
+  try {
+    position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.best);
+  } catch (e) {
+    debugPrint(e.toString());
+  }
+  return position;
 }
