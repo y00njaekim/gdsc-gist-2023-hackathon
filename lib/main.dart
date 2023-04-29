@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ga/screens/login_screen.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:ga/screens/detail_attendance_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -43,7 +44,7 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Poppins',
         primarySwatch: Colors.blue,
       ),
-      home: const LoginScreen(),
+      home: const DetailAttendanceScreen(),
     );
   }
 }
