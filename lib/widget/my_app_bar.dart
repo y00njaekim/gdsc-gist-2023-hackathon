@@ -1,15 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final String titleText;
+import '../apis/student_info.dart';
+import '../models/student/student.dart';
 
+final studentProvider = FutureProvider<Student>((ref) async {
+  final student = await StudentInfoApi.getStudentInfoApi();
+  return student;
+});
+
+class MyAppBar extends ConsumerWidget implements PreferredSizeWidget {
   const MyAppBar({
     Key? key,
-    required this.titleText,
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final user = ref.watch(studentProvider);
     return AppBar(
       elevation: 0,
       backgroundColor: Colors.white,
@@ -31,13 +38,23 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
                 children: [
                   Align(
                     alignment: Alignment.centerRight,
-                    child: Text(
-                      titleText,
-                      style: const TextStyle(
-                        color: Colors.black,
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.w500,
-                      ),
+                    child: user.when(
+                      data: (user) {
+                        return Text(
+                          "${user.id} ${user.name}",
+                          style: const TextStyle(
+                            color: Colors.black,
+                            fontSize: 12.0,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        );
+                      },
+                      error: (Object error, StackTrace stackTrace) {
+                        return Container();
+                      },
+                      loading: () {
+                        return const Center(child: CircularProgressIndicator());
+                      },
                     ),
                   ),
                   Container(

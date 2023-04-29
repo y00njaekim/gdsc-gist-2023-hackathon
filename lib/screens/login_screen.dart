@@ -66,7 +66,7 @@ class _LoginScreenState extends State<LoginScreen> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Image.asset(
-                "assets/images/logo.png",
+                "assets/images/logo_big.png",
                 width: 200,
                 height: 120,
               ),

@@ -49,16 +49,16 @@ Future<String> getNetworkAddress() async {
   return resultIP;
 }
 
-Future<String> getIPAddress() async {
+Future<String?> getIPAddress() async {
   final NetworkInfo networkInfo = NetworkInfo();
   String? wifiIPv4;
 
   try {
     wifiIPv4 = await networkInfo.getWifiIP();
   } on PlatformException {
-    wifiIPv4 = 'Failed to get Wifi IPv4';
+    // wifiIPv4 = 'Failed to get Wifi IPv4';
   }
-  wifiIPv4 ??= 'Wifi is not connected';
+  // wifiIPv4 ??= 'Wifi is not connected';
 
   return wifiIPv4;
 }

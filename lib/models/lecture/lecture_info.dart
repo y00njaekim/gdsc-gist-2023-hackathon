@@ -8,7 +8,7 @@ part 'lecture_info.g.dart';
 @freezed
 class LectureInfo with _$LectureInfo {
   factory LectureInfo({
-    required int id,
+    required String id,
     required String name,
     required int professor_id,
     required String lecture_start_time,

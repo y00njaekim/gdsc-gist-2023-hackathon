@@ -1,11 +1,25 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ga/screens/login_screen.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:ga/screens/detail_attendance_screen.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  runZonedGuarded<Future<void>>(() async {
+    final requestState = await Permission.locationWhenInUse.request();
+
+    runApp(
+      const ProviderScope(
+        child: MyApp(),
+      ),
+    );
+  }, (error, stack) => {print(error)});
 }
 
 class MyApp extends StatelessWidget {
