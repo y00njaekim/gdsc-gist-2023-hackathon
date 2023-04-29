@@ -10,12 +10,14 @@ class StudentLectureListApi {
   static Future<LectureInfoList> getStudentLectureList() async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      return await getByToken("/v1/lecture", prefs.getString("token")!, null)
-          .then(
+      final result =
+          await getByToken("/v1/lecture", prefs.getString("token")!, null).then(
         (value) => LectureInfoList.fromJson(
           {"lectureInfoList": value.data},
         ),
       );
+      print(result);
+      return result;
     } on DioError {
       throw StudentLectureListApiFailure();
     }

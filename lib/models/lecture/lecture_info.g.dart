@@ -8,7 +8,7 @@ part of 'lecture_info.dart';
 
 _$_LectureInfo _$$_LectureInfoFromJson(Map<String, dynamic> json) =>
     _$_LectureInfo(
-      id: json['id'] as int,
+      id: json['id'] as String,
       name: json['name'] as String,
       professor_id: json['professor_id'] as int,
       lecture_start_time: json['lecture_start_time'] as String,
