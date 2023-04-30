@@ -1,9 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ga/apis/attendance_by_lecture.dart';
+import 'package:intl/intl.dart';
+
+import '../models/attendance/attendance.dart';
+
+Map<String, List<dynamic>> result = {
+  "OK": ["Attendance", "Checked", true],
+  "LATE": ["LATE", "Checked", false],
+  "ABSENT": ["ABSENT", "No attendance check", false],
+};
+
+final lectureListProvider =
+    FutureProvider.family<List<Attendance>, String>((ref, str) async {
+  final attendances =
+      await AttendanceListByLecture.getAttendanceByLectureApi(str);
+  return attendances.attendanceList;
+});
+
+// final countLectureProvider =
+//     FutureProvider.family<Count, String>((ref, str) async {
+//   final attendances =
+//       await AttendanceListByLecture.getAttendanceByLectureApi(str);
+//   return attendances.attendanceList;
+// });
 
 class DetailAttendanceScreen extends ConsumerStatefulWidget {
-  const DetailAttendanceScreen({Key? key}) : super(key: key);
-
+  const DetailAttendanceScreen(this.lectureName, this.lectureId, {Key? key})
+      : super(key: key);
+  final String lectureName;
+  final String lectureId;
   @override
   DetailAttendanceScreenState createState() => DetailAttendanceScreenState();
 }
@@ -29,9 +55,9 @@ class DetailAttendanceScreenState
         ),
         elevation: 0,
         backgroundColor: Colors.white,
-        title: const Text(
-          'Discrete Mathematics',
-          style: TextStyle(
+        title: Text(
+          widget.lectureName,
+          style: const TextStyle(
             color: Colors.black,
             fontSize: 16,
             fontWeight: FontWeight.w700,
@@ -97,145 +123,67 @@ class DetailAttendanceScreenState
   }
 
   Widget _buildDetailAttendance() {
-    List<String> items = [
-      '두러운뜨마락망가',
-      '아마도사스끼쩜마',
-      '코노하나미니치와',
-      '토모다치유지니에',
-      '벤이소시오프란치',
-      '노점상의귀환오징',
-      '케밥을사랑한여자',
-      '메탈기어소리다카',
-      '페인터오브라이트',
-      '어나더우드라이브'
-    ];
-    return Container(
-      child: Padding(
-        padding: const EdgeInsets.only(top: 12.0),
-        child: Container(
+    final lectureProvider = ref.watch(
+      lectureListProvider(
+        widget.lectureId,
+      ),
+    );
+
+    return lectureProvider.when(
+      data: (lectureProvider) {
+        return Padding(
+          padding: const EdgeInsets.only(top: 12.0),
           child: ListView.separated(
             physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             scrollDirection: Axis.vertical,
-            itemCount: items.length,
+            itemCount: lectureProvider.length,
             separatorBuilder: (context, index) => const Divider(
               height: 5,
               color: Colors.transparent,
             ),
             itemBuilder: (context, index) {
-              return _buildAttendanceItem(items, index);
+              return _buildAttendanceItem(lectureProvider[index], index);
             },
           ),
-        ),
-      ),
+        );
+      },
+      error: (Object error, StackTrace stackTrace) {
+        return Text("$error");
+      },
+      loading: () {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      },
     );
   }
 
-  SizedBox _buildAttendanceItem(List<String> items, int index) {
-    bool isLate = false;
-    String date = '4/19';
-    String dayOfWeek = 'Wed';
-    String msgForLate = 'No Attendance Check';
-    String msgForAttend = '10:25 Checked';
-    return isLate == true
-        ? SizedBox(
-            height: 65,
-            child: Row(
+  SizedBox _buildAttendanceItem(Attendance item, int index) {
+    String formatDay(String date) {
+      DateTime dateTime = DateTime.parse(date);
+      return DateFormat("MM/dd", "ko_KR").format(dateTime);
+    }
+
+    String formatHour(String date) {
+      DateTime dateTime = DateTime.parse(date);
+      return DateFormat("HH : mm", "ko_KR").format(dateTime);
+    }
+
+    List<dynamic> data = result[item.status]!;
+    return SizedBox(
+      height: 65,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Container(
-                        child: Text(
-                          date,
-                          style: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                            color: Color(0xffADA4A5),
-                          ),
-                        ),
-                      ),
-                      Container(
-                        child: Text(
-                          dayOfWeek,
-                          style: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                            color: Color(0xffADA4A5),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        child: Image.asset(
-                          'assets/images/Circle_grey.png',
-                        ),
-                      ),
-                      Container(
-                        child: Image.asset(
-                          'assets/images/Line_grey.png',
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Container(
-                        child: const Text(
-                          'Late',
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                            color: Color(0xff1D1617),
-                          ),
-                        ),
-                      ),
-                      Container(
-                        height: 8,
-                      ),
-                      Container(
-                        child: Text(
-                          msgForLate,
-                          style: const TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w400,
-                            color: Color(0xff7B6F72),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          )
-        : SizedBox(
-            height: 65,
-            child: Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Container(
-                        child: Text(
-                          date,
-                          style: TextStyle(
+                Text(formatDay(item.created_at),
+                    style: data[2]
+                        ? TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w400,
                             foreground: Paint()
@@ -246,81 +194,75 @@ class DetailAttendanceScreenState
                                 ],
                               ).createShader(
                                   const Rect.fromLTWH(0.0, 0.0, 200.0, 100.0)),
-                          ),
-                        ),
-                      ),
-                      Container(
-                        child: Text(
-                          dayOfWeek,
-                          style: TextStyle(
+                          )
+                        : const TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w400,
-                            foreground: Paint()
-                              ..shader = const LinearGradient(
-                                colors: <Color>[
-                                  Color(0xffC58BF2),
-                                  Color(0xffEEA4CE),
-                                ],
-                              ).createShader(
-                                  const Rect.fromLTWH(0.0, 0.0, 200.0, 100.0)),
-                          ),
-                        ),
+                            color: Color(0xffADA4A5))),
+                //아직 구현 안 됨
+                // Text(
+                //   dayOfWeek,
+                //   style: const TextStyle(
+                //     fontSize: 14,
+                //     fontWeight: FontWeight.w400,
+                //     color: Color(0xffADA4A5),
+                //   ),
+                // ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                data[2]
+                    ? Image.asset(
+                        'assets/images/Circle_pink.png',
+                      )
+                    : Image.asset(
+                        'assets/images/Circle_grey.png',
                       ),
-                    ],
+                data[2]
+                    ? Image.asset(
+                        'assets/images/Line_pink.png',
+                      )
+                    : Image.asset(
+                        'assets/images/Line_grey.png',
+                      ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Text(
+                  '${data[0]}',
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                    color: Color(0xff1D1617),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        child: Image.asset(
-                          'assets/images/Circle_pink.png',
-                        ),
-                      ),
-                      Container(
-                        child: Image.asset(
-                          'assets/images/Line_pink.png',
-                        ),
-                      ),
-                    ],
-                  ),
+                Container(
+                  height: 8,
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Container(
-                        child: const Text(
-                          'Attendance',
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                            color: Color(0xff1D1617),
-                          ),
-                        ),
-                      ),
-                      Container(
-                        height: 8,
-                      ),
-                      Container(
-                        child: Text(
-                          msgForAttend,
-                          style: const TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w400,
-                            color: Color(0xff7B6F72),
-                          ),
-                        ),
-                      ),
-                    ],
+                Text(
+                  "${formatHour(item.created_at)} ${data[1]}",
+                  style: const TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w400,
+                    color: Color(0xff7B6F72),
                   ),
                 ),
               ],
             ),
-          );
+          ),
+        ],
+      ),
+    );
   }
 }

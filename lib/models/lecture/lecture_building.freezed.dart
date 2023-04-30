@@ -20,7 +20,7 @@ LectureBuilding _$LectureBuildingFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$LectureBuilding {
-  int get id => throw _privateConstructorUsedError;
+  String get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   String get location => throw _privateConstructorUsedError;
 
@@ -36,7 +36,7 @@ abstract class $LectureBuildingCopyWith<$Res> {
           LectureBuilding value, $Res Function(LectureBuilding) then) =
       _$LectureBuildingCopyWithImpl<$Res, LectureBuilding>;
   @useResult
-  $Res call({int id, String name, String location});
+  $Res call({String id, String name, String location});
 }
 
 /// @nodoc
@@ -60,7 +60,7 @@ class _$LectureBuildingCopyWithImpl<$Res, $Val extends LectureBuilding>
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as int,
+              as String,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -81,7 +81,7 @@ abstract class _$$_LectureBuildingCopyWith<$Res>
       __$$_LectureBuildingCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int id, String name, String location});
+  $Res call({String id, String name, String location});
 }
 
 /// @nodoc
@@ -103,7 +103,7 @@ class __$$_LectureBuildingCopyWithImpl<$Res>
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as int,
+              as String,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -126,7 +126,7 @@ class _$_LectureBuilding implements _LectureBuilding {
       _$$_LectureBuildingFromJson(json);
 
   @override
-  final int id;
+  final String id;
   @override
   final String name;
   @override
@@ -168,7 +168,7 @@ class _$_LectureBuilding implements _LectureBuilding {
 
 abstract class _LectureBuilding implements LectureBuilding {
   factory _LectureBuilding(
-      {required final int id,
+      {required final String id,
       required final String name,
       required final String location}) = _$_LectureBuilding;
 
@@ -176,7 +176,7 @@ abstract class _LectureBuilding implements LectureBuilding {
       _$_LectureBuilding.fromJson;
 
   @override
-  int get id;
+  String get id;
   @override
   String get name;
   @override
