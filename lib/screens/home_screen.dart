@@ -41,7 +41,7 @@ final ipValidateProvider =
 });
 
 final timerProvider = Provider.autoDispose((ref) {
-  return Timer.periodic(const Duration(seconds: 30), (timer) {
+  return Timer.periodic(const Duration(seconds: 2), (timer) {
     ref.refresh(ipValidateProvider("ES2023"));
   });
 });
@@ -423,7 +423,7 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
                                                 ),
                                               ),
                                               child: const Text(
-                                                'Please check your Condition',
+                                                'Check your Connection',
                                                 style: TextStyle(
                                                   color: Color(0xff7B6F72),
                                                   fontSize: 16,
@@ -552,7 +552,7 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
                                         height: 5,
                                       ),
                                       FutureBuilder(
-                                          future: _future(lecture.name),
+                                          future: _future(lecture.id),
                                           builder: (context,
                                               AsyncSnapshot<Count> snapshot) {
                                             if (snapshot.hasData) {

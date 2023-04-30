@@ -8,7 +8,7 @@ class StudentInfoApiRequestedFailure implements Exception {}
 
 class StudentInfoApi {
   static Future<Student> getStudentInfoApi() async {
-    // 토큰 넣어야됨
+    // 토큰 넣어야됨r
     // id로 들어가는지 확인해야됨
 
     try {
