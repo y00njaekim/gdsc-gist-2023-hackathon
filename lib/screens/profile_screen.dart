@@ -35,7 +35,6 @@ class ProfileScreenState extends ConsumerState<ProfileScreen> {
   final phoneNumController = TextEditingController();
   @override
   void initState() {
-    ref.watch(studentProvider);
     super.initState();
   }
 
