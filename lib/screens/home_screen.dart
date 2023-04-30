@@ -2,14 +2,19 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ga/apis/attendance_create.dart';
+import 'package:ga/apis/lecture_building_by_id.dart';
+import 'package:ga/apis/lecture_building_by_lecture.dart';
 import 'package:ga/models/count/count.dart';
 import 'package:ga/models/lecture/lecture_info.dart';
+import 'package:ga/screens/detail_attendance_screen.dart';
 import 'package:ga/utils/utils.dart';
 import 'package:ga/widget/my_app_bar.dart';
 
 import '../apis/attendance_count_by_lecture.dart';
 import '../apis/student_lecture_list.dart';
 import '../apis/validate_ip.dart';
+import '../models/attendance/attendance.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -24,20 +29,24 @@ final lectureListProvider = FutureProvider<List<LectureInfo>>((ref) async {
   return lectures.lectureInfoList;
 });
 
-final apiProvider = FutureProvider.family<List<bool>, String>((ref, str) async {
+final ipValidateProvider =
+    FutureProvider.family<List<bool>, String>((ref, str) async {
   final firstComponent = await getIPAddress() == null ? false : true;
-  final secondComponent = await getCurrentLocation() == null ? true : false;
+  final secondComponent = await getCurrentLocation() == null ? false : true;
   final response = firstComponent == true
       ? await ValidateIp.getValidateIp(await getIPAddress() as String, str)
       : false;
+  print(response);
   return [firstComponent, secondComponent, response];
 });
 
 final timerProvider = Provider.autoDispose((ref) {
-  return Timer.periodic(const Duration(seconds: 10), (timer) {
-    ref.refresh(apiProvider("ES2023"));
+  return Timer.periodic(const Duration(seconds: 30), (timer) {
+    ref.refresh(ipValidateProvider("ES2023"));
   });
 });
+
+final attendanceProvider = StateProvider<Attendance?>((ref) => null);
 
 class HomeScreenState extends ConsumerState<HomeScreen> {
   @override
@@ -79,7 +88,8 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
     WidgetRef ref,
   ) {
     ref.watch(timerProvider);
-    final data = ref.watch(apiProvider("ES2023"));
+    final data = ref.watch(ipValidateProvider("ES2023"));
+    final check = ref.watch(attendanceProvider);
 
     return data.when(
       data: (data) {
@@ -156,8 +166,17 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
                               ],
                             ),
                             //이거 wifi 연동에 따라 다를 듯
-                            data[0]
+                            data[2]
                                 ? Container(
+                                    margin: const EdgeInsets.symmetric(
+                                        horizontal: 12),
+                                    child: const Icon(
+                                      // icons x
+                                      Icons.check,
+                                      color: Color(0xffc58bf2),
+                                    ),
+                                  )
+                                : Container(
                                     margin: const EdgeInsets.symmetric(
                                         horizontal: 12),
                                     child: const Icon(
@@ -166,15 +185,6 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
                                       color: Colors.black,
                                     ),
                                   )
-                                : Container(
-                                    margin: const EdgeInsets.symmetric(
-                                        horizontal: 12),
-                                    child: const Icon(
-                                      // icons x
-                                      Icons.check,
-                                      color: Color(0xffc58bf2),
-                                    ),
-                                  ),
                           ],
                         ),
                       ),
@@ -214,8 +224,8 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
                                         horizontal: 12),
                                     child: const Icon(
                                       // icons x
-                                      Icons.close,
-                                      color: Colors.black,
+                                      Icons.check,
+                                      color: Color(0xffc58bf2),
                                     ),
                                   )
                                 : Container(
@@ -223,10 +233,11 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
                                         horizontal: 12),
                                     child: const Icon(
                                       // icons x
-                                      Icons.check,
-                                      color: Color(0xffc58bf2),
+                                      Icons.close,
+                                      color: Colors.black,
                                     ),
                                   ),
+
                             // Container(
                             //   margin:
                             //       const EdgeInsets.symmetric(horizontal: 12),
@@ -300,43 +311,127 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
                   child: SizedBox(
                       width: 256,
                       height: 56,
-                      child: data[1] && data[2]
+                      child: check?.status == "OK"
                           ? ElevatedButton(
-                              onPressed: () {
-                                //api가 뭐야?
-                              },
+                              onPressed: () async {},
                               style: TextButton.styleFrom(
-                                backgroundColor: const Color(0xff92A3FD),
+                                backgroundColor: const Color(0xffDDDADA),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(99.0),
                                 ),
                               ),
                               child: const Text(
-                                'Check Attendance',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                              ),
-                            )
-                          : ElevatedButton(
-                              onPressed: () {},
-                              style: TextButton.styleFrom(
-                                backgroundColor: Colors.white,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(99.0),
-                                ),
-                              ),
-                              child: const Text(
-                                'Please check your wifi',
+                                'Checked',
                                 style: TextStyle(
                                   color: Color(0xff7B6F72),
                                   fontSize: 16,
                                   fontWeight: FontWeight.w700,
                                 ),
                               ),
-                            )),
+                            )
+                          : data[1] && data[2]
+                              ? ElevatedButton(
+                                  onPressed: () async {
+                                    showDialog(
+                                        context: context,
+                                        useRootNavigator: true,
+                                        barrierDismissible: false,
+                                        builder: (context) => const Center(
+                                            child:
+                                                CircularProgressIndicator()));
+                                    final resultLecture =
+                                        await LectureBuildingByLectureApi
+                                            .getLectureBuildingApi("ES2023");
+                                    final result = await LectureBuildingApi
+                                        .getLectureBuildingApi(
+                                            resultLecture.building_id);
+
+                                    final Attendance attendance =
+                                        await AttendanceCreateApi
+                                            .postAttendanceCreateApi(
+                                                result.name,
+                                                await getIPAddress() as String,
+                                                "ES2023");
+                                    ref
+                                        .read(attendanceProvider.notifier)
+                                        .state = attendance;
+
+                                    Navigator.pop(context);
+                                  },
+                                  style: TextButton.styleFrom(
+                                    backgroundColor: const Color(0xff92A3FD),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(99.0),
+                                    ),
+                                  ),
+                                  child: const Text(
+                                    'Check Attendance',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
+                                )
+                              : !data[1] && data[2]
+                                  ? ElevatedButton(
+                                      onPressed: () {},
+                                      style: TextButton.styleFrom(
+                                        backgroundColor: Colors.white,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(99.0),
+                                        ),
+                                      ),
+                                      child: const Text(
+                                        'Please check your GPS',
+                                        style: TextStyle(
+                                          color: Color(0xff7B6F72),
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      ),
+                                    )
+                                  : data[1] && !data[2]
+                                      ? ElevatedButton(
+                                          onPressed: () {},
+                                          style: TextButton.styleFrom(
+                                            backgroundColor: Colors.white,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(99.0),
+                                            ),
+                                          ),
+                                          child: const Text(
+                                            'Please check your WIFI',
+                                            style: TextStyle(
+                                              color: Color(0xff7B6F72),
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w700,
+                                            ),
+                                          ),
+                                        )
+                                      : !data[1] && !data[2]
+                                          ? ElevatedButton(
+                                              onPressed: () {},
+                                              style: TextButton.styleFrom(
+                                                backgroundColor: Colors.white,
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          99.0),
+                                                ),
+                                              ),
+                                              child: const Text(
+                                                'Please check your Condition',
+                                                style: TextStyle(
+                                                  color: Color(0xff7B6F72),
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w700,
+                                                ),
+                                              ),
+                                            )
+                                          : null),
                 )
               ],
             ),
@@ -384,14 +479,12 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
             height: 60,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  child: const Text(
-                    'My Lectures',
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.w700,
-                    ),
+              children: const [
+                Text(
+                  'My Lectures',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.w700,
                   ),
                 ),
                 // Container(
@@ -422,74 +515,87 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
                     itemBuilder: (context, index) {
                       final lecture = lectures[index];
 
-                      return Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              _coloredSquare(index),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.fromLTRB(12, 6, 12, 6),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    Text(
-                                      lecture.name,
-                                      style: const TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w400,
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (BuildContext context) =>
+                                  DetailAttendanceScreen(
+                                      lecture.name, lecture.id),
+                            ),
+                          );
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                _coloredSquare(index),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(12, 6, 12, 6),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      Text(
+                                        lecture.name,
+                                        style: const TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w400,
+                                        ),
                                       ),
-                                    ),
-                                    Container(
-                                      height: 5,
-                                    ),
-                                    FutureBuilder(
-                                        future: _future(lecture.name),
-                                        builder: (context,
-                                            AsyncSnapshot<Count> snapshot) {
-                                          if (snapshot.hasData) {
-                                            final count = snapshot.data;
-                                            return Row(
-                                              children: [
-                                                Text(
-                                                  '${count!.LATE} late / ${count.ABSENT} absent',
-                                                  style: const TextStyle(
-                                                      fontSize: 11,
-                                                      color: Color(0xffADA4A5)),
-                                                ),
-                                              ],
-                                            );
-                                          }
-                                          return Container();
-                                        })
-                                    // Text(
-                                    //   lecture.
-                                    //   style: const TextStyle(
-                                    //     fontSize: 12,
-                                    //     fontWeight: FontWeight.w400,
-                                    //     color: Color(0xff7B6F72),
-                                    //   ),
-                                    // ),
-                                  ],
+                                      Container(
+                                        height: 5,
+                                      ),
+                                      FutureBuilder(
+                                          future: _future(lecture.name),
+                                          builder: (context,
+                                              AsyncSnapshot<Count> snapshot) {
+                                            if (snapshot.hasData) {
+                                              final count = snapshot.data;
+                                              return Row(
+                                                children: [
+                                                  Text(
+                                                    '${count!.LATE} late / ${count.ABSENT} absent',
+                                                    style: const TextStyle(
+                                                        fontSize: 11,
+                                                        color:
+                                                            Color(0xffADA4A5)),
+                                                  ),
+                                                ],
+                                              );
+                                            }
+                                            return Container();
+                                          })
+                                      // Text(
+                                      //   lecture.
+                                      //   style: const TextStyle(
+                                      //     fontSize: 12,
+                                      //     fontWeight: FontWeight.w400,
+                                      //     color: Color(0xff7B6F72),
+                                      //   ),
+                                      // ),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
-                          const Icon(
-                            Icons.arrow_circle_right_outlined,
-                            color: Color(0xffADA4A5),
-                          )
-                        ],
+                              ],
+                            ),
+                            const Icon(
+                              Icons.arrow_circle_right_outlined,
+                              color: Color(0xffADA4A5),
+                            )
+                          ],
+                        ),
                       );
                     },
                   );
                 },
                 loading: () => const Center(child: CircularProgressIndicator()),
                 error: (error, stackTrace) {
-                  print(error);
                   return const Text('Failed to fetch lectures');
                 }),
           ),
