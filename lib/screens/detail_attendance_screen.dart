@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ga/apis/attendance_by_lecture.dart';
+import 'package:ga/apis/attendance_count_by_lecture.dart';
 import 'package:intl/intl.dart';
 
 import '../models/attendance/attendance.dart';
+import '../models/count/count.dart';
 
 Map<String, List<dynamic>> result = {
   "OK": ["Attendance", "Checked", true],
   "LATE": ["LATE", "Checked", false],
   "ABSENT": ["ABSENT", "No attendance check", false],
+  "EXCUSED": ["EXCUSED", "No attendance check", false],
+  "UNKNOWN": ["UNKNOWN", "No attendance check", false],
+  "ETC": ["ETC", "No attendance check", false],
 };
 
 final lectureListProvider =
@@ -16,6 +21,11 @@ final lectureListProvider =
   final attendances =
       await AttendanceListByLecture.getAttendanceByLectureApi(str);
   return attendances.attendanceList;
+});
+
+final countProvider = FutureProvider.family<Count, String>((ref, str) async {
+  final count = await AttendanceCountLecture.getAttendanceCountLectureApi(str);
+  return count;
 });
 
 // final countLectureProvider =
@@ -90,35 +100,47 @@ class DetailAttendanceScreenState
   }
 
   Widget _buildAbstract() {
-    return Center(
-      child: Column(
-        children: [
-          Container(
-            height: 20,
-          ),
-          const Align(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              'Attendance',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w800,
+    final count = ref.watch(countProvider(widget.lectureId));
+
+    return count.when(
+      data: (count) {
+        return Center(
+          child: Column(
+            children: [
+              Container(
+                height: 20,
               ),
-            ),
-          ),
-          const Align(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              '10 attend / 4 late / 0 absent',
-              style: TextStyle(
-                color: Color(0xffADA4A5),
-                fontSize: 12,
-                fontWeight: FontWeight.w400,
+              const Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Attendance',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
               ),
-            ),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  '${count.OK} attend / ${count.LATE} late / ${count.ABSENT} absent',
+                  style: const TextStyle(
+                    color: Color(0xffADA4A5),
+                    fontSize: 12,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
+        );
+      },
+      error: (Object error, StackTrace stackTrace) {
+        return Text("$error");
+      },
+      loading: () {
+        return const Center(child: CircularProgressIndicator());
+      },
     );
   }
 
@@ -170,99 +192,101 @@ class DetailAttendanceScreenState
       return DateFormat("HH : mm", "ko_KR").format(dateTime);
     }
 
-    List<dynamic> data = result[item.status]!;
-    return SizedBox(
-      height: 65,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Column(
+    List<dynamic>? data = result[item.status];
+    return data != null
+        ? SizedBox(
+            height: 65,
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Text(formatDay(item.created_at),
-                    style: data[2]
-                        ? TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                            foreground: Paint()
-                              ..shader = const LinearGradient(
-                                colors: <Color>[
-                                  Color(0xffC58BF2),
-                                  Color(0xffEEA4CE),
-                                ],
-                              ).createShader(
-                                  const Rect.fromLTWH(0.0, 0.0, 200.0, 100.0)),
-                          )
-                        : const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                            color: Color(0xffADA4A5))),
-                //아직 구현 안 됨
-                // Text(
-                //   dayOfWeek,
-                //   style: const TextStyle(
-                //     fontSize: 14,
-                //     fontWeight: FontWeight.w400,
-                //     color: Color(0xffADA4A5),
-                //   ),
-                // ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                data[2]
-                    ? Image.asset(
-                        'assets/images/Circle_pink.png',
-                      )
-                    : Image.asset(
-                        'assets/images/Circle_grey.png',
-                      ),
-                data[2]
-                    ? Image.asset(
-                        'assets/images/Line_pink.png',
-                      )
-                    : Image.asset(
-                        'assets/images/Line_grey.png',
-                      ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Text(
-                  '${data[0]}',
-                  style: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                    color: Color(0xff1D1617),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(formatDay(item.created_at),
+                          style: data[2]
+                              ? TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400,
+                                  foreground: Paint()
+                                    ..shader = const LinearGradient(
+                                      colors: <Color>[
+                                        Color(0xffC58BF2),
+                                        Color(0xffEEA4CE),
+                                      ],
+                                    ).createShader(const Rect.fromLTWH(
+                                        0.0, 0.0, 200.0, 100.0)),
+                                )
+                              : const TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400,
+                                  color: Color(0xffADA4A5))),
+                      //아직 구현 안 됨
+                      // Text(
+                      //   dayOfWeek,
+                      //   style: const TextStyle(
+                      //     fontSize: 14,
+                      //     fontWeight: FontWeight.w400,
+                      //     color: Color(0xffADA4A5),
+                      //   ),
+                      // ),
+                    ],
                   ),
                 ),
-                Container(
-                  height: 8,
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      data[2]
+                          ? Image.asset(
+                              'assets/images/Circle_pink.png',
+                            )
+                          : Image.asset(
+                              'assets/images/Circle_grey.png',
+                            ),
+                      data[2]
+                          ? Image.asset(
+                              'assets/images/Line_pink.png',
+                            )
+                          : Image.asset(
+                              'assets/images/Line_grey.png',
+                            ),
+                    ],
+                  ),
                 ),
-                Text(
-                  "${formatHour(item.created_at)} ${data[1]}",
-                  style: const TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w400,
-                    color: Color(0xff7B6F72),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        '${data[0]}',
+                        style: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xff1D1617),
+                        ),
+                      ),
+                      Container(
+                        height: 8,
+                      ),
+                      Text(
+                        "${formatHour(item.created_at)} ${data[1]}",
+                        style: const TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xff7B6F72),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
             ),
-          ),
-        ],
-      ),
-    );
+          )
+        : const SizedBox();
   }
 }

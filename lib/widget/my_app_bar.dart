@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ga/screens/profile_screen.dart';
 
 import '../apis/student_info.dart';
 import '../models/student/student.dart';
@@ -59,10 +60,21 @@ class MyAppBar extends ConsumerWidget implements PreferredSizeWidget {
                   ),
                   Container(
                     padding: const EdgeInsets.only(left: 15),
-                    child: const Icon(
-                      Icons.account_circle,
-                      color: Colors.black,
-                      size: 40,
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                const ProfileScreen(),
+                          ),
+                        );
+                      },
+                      child: const Icon(
+                        Icons.account_circle,
+                        color: Colors.black,
+                        size: 40,
+                      ),
                     ),
                   ),
                 ],
