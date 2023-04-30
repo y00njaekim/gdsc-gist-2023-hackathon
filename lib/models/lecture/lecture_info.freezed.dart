@@ -20,7 +20,7 @@ LectureInfo _$LectureInfoFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$LectureInfo {
-  int get id => throw _privateConstructorUsedError;
+  String get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   int get professor_id => throw _privateConstructorUsedError;
   String get lecture_start_time => throw _privateConstructorUsedError;
@@ -40,7 +40,7 @@ abstract class $LectureInfoCopyWith<$Res> {
       _$LectureInfoCopyWithImpl<$Res, LectureInfo>;
   @useResult
   $Res call(
-      {int id,
+      {String id,
       String name,
       int professor_id,
       String lecture_start_time,
@@ -72,7 +72,7 @@ class _$LectureInfoCopyWithImpl<$Res, $Val extends LectureInfo>
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as int,
+              as String,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -106,7 +106,7 @@ abstract class _$$_LectureInfoCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {int id,
+      {String id,
       String name,
       int professor_id,
       String lecture_start_time,
@@ -136,7 +136,7 @@ class __$$_LectureInfoCopyWithImpl<$Res>
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as int,
+              as String,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -176,7 +176,7 @@ class _$_LectureInfo implements _LectureInfo {
       _$$_LectureInfoFromJson(json);
 
   @override
-  final int id;
+  final String id;
   @override
   final String name;
   @override
@@ -231,7 +231,7 @@ class _$_LectureInfo implements _LectureInfo {
 
 abstract class _LectureInfo implements LectureInfo {
   factory _LectureInfo(
-      {required final int id,
+      {required final String id,
       required final String name,
       required final int professor_id,
       required final String lecture_start_time,
@@ -242,7 +242,7 @@ abstract class _LectureInfo implements LectureInfo {
       _$_LectureInfo.fromJson;
 
   @override
-  int get id;
+  String get id;
   @override
   String get name;
   @override

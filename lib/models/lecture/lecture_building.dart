@@ -8,7 +8,7 @@ part 'lecture_building.g.dart';
 @freezed
 class LectureBuilding with _$LectureBuilding {
   factory LectureBuilding({
-    required int id,
+    required String id,
     required String name,
     required String location,
   }) = _LectureBuilding;

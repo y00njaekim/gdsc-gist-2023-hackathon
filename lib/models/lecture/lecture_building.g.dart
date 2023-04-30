@@ -8,7 +8,7 @@ part of 'lecture_building.dart';
 
 _$_LectureBuilding _$$_LectureBuildingFromJson(Map<String, dynamic> json) =>
     _$_LectureBuilding(
-      id: json['id'] as int,
+      id: json['id'] as String,
       name: json['name'] as String,
       location: json['location'] as String,
     );
